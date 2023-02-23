@@ -1,6 +1,6 @@
 plugins {
   id 'java'
-  id 'org.springframework.boot' version '2.7.8'
+  id 'org.springframework.boot' version '2.5.2'   // '2.7.8'
   id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -9,15 +9,63 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
+  maven { url 'https://repo.spring.io/release' }
   mavenCentral()
 }
 
+// testcontaineres
+ext {
+  set('testcontainersVersion', "1.15.3")
+  set('springCloudVersion', "2020.0.3")
+}
+
 dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+  implementation 'org.springframework.cloud:spring-cloud-config-server'
+
   implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+  // cache > simple
+  //implementation 'org.springframework.boot:spring-boot-starter-cache'
+  // or
+  // cache > redis
+  implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+  // vault
+  //implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
+
+
+  // lombok
+  compileOnly 'org.projectlombok:lombok'
+  annotationProcessor 'org.projectlombok:lombok'
+
+  // application.properties/.yml 파일 > custom 설정 자동완성 도움
+  annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+  // testcontaineres
+  //testImplementation "org.testcontainers:vault:${testcontainersVersion}"
+  testImplementation 'org.testcontainers:junit-jupiter'
+
+
+
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+// testcontaineres
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+  }
+}
+
 
 tasks.named('test') {
   useJUnitPlatform()
 }
+
+//compileJava {
+//  inputs.files(processResources)
+//}
