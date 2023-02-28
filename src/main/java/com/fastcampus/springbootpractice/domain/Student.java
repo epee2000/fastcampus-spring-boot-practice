@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor // redis cache 에서 Jackson2Json 를 사용해서 class를 읽으려면 기본 생성자가 필요하다!
+@NoArgsConstructor // redis cache 에서 Jackson2Json 를 사용해서 class 를 읽으려면 기본 생성자가 필요하다! 리플랙션 사용... 기본 생성자가 필요
 @AllArgsConstructor(staticName = "of") // 전체 생성자에 staticName 를 사용하면 생성자가 private 으로 바뀐다!
 public class Student {
   private String name;

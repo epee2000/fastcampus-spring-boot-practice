@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.config.server.EnableConfigServer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
@@ -16,6 +17,8 @@ import org.springframework.core.env.Environment;
 
 // ### https://github.com/djkeh/fastcampus-spring-boot-practice ### ///
 
+
+@EnableConfigServer // spring.cloud.config.server.git.uri, http://localhost:8888/config/test/develop
 //@EnableCaching // Cache 적용은 모든 bean 들이 로딩이 된 뒤에 활성화가 된다.
 @ConfigurationPropertiesScan // @Configuration 생략 대신 선언
 @SpringBootApplication
@@ -51,8 +54,8 @@ public class FastcampusSpringBootPracticeApplication {
    * @PostConstruct
    */
 
-  //@PostConstruct // Cache 적용은 모든 bean 들이 로딩이 된 뒤에 활성화가 된다.
-  @EventListener(ApplicationReadyEvent.class) // 모든 bean 이 다 로드되고 스프링 컨테이너 준비 완료 된 후
+  //@PostConstruct // 해당 class 내 모든 의존성(주입)이 완성된 후, --> Cache 적용은 모든 bean 들이 로딩이 된 뒤에 활성화가 된다.
+  @EventListener(ApplicationReadyEvent.class) // 모든 bean 이 다 로드되고 스프링 컨테이너 준비 완료 된 후, 즉 Application 준비가 끝났을때... 이벤트
   public void init() { // 3번 호출...
     studentService.printStudent("jack");
     studentService.printStudent("jack");
